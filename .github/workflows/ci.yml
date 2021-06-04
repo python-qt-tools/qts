@@ -18,6 +18,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        task:
+          - name: Build
+            tox: build
         os:
           - name: Linux
             runs-on: ubuntu-latest
@@ -27,9 +30,6 @@ jobs:
           - name: 3.8
             action: 3.8
             docker: 3.8
-        task:
-          - name: Build
-            tox: build
 
     steps:
       - uses: actions/checkout@v1
@@ -63,6 +63,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        task:
+          - name: Test
         os:
           - name: Linux
             runs-on: ubuntu-latest
