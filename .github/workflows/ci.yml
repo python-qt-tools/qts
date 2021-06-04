@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}
+    name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}-${{ matrix.bitness.name}}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ format(matrix.os.container, matrix.python.docker) }}
     strategy:
@@ -31,6 +31,9 @@ jobs:
           - name: 3.8
             action: 3.8
             docker: 3.8
+        bitness:
+          - name: x64
+            action: x64
 
     steps:
       - uses: actions/checkout@v1
@@ -57,7 +60,7 @@ jobs:
           path: dist/
 
   check:
-    name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}
+    name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}-${{ matrix.bitness.name}}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ format(matrix.os.container, matrix.python.docker) }}
     strategy:
@@ -76,6 +79,9 @@ jobs:
           - name: 3.8
             action: 3.8
             docker: 3.8
+        bitness:
+          - name: x64
+            action: x64
 
     env:
       TOXENV: ${{ matrix.task.tox }}
@@ -328,13 +334,13 @@ jobs:
         run: |
           tox --skip-pkg-install -e ${{ env.TOXENV }}
       - name: Coverage Processing
-        if: ${{ always() }}
+#        if: ${{ always() }}
         run: |
           mkdir all_coverage_report
           cp .coverage "all_coverage_report/.coverage.all"
           cp coverage.xml "all_coverage_report/coverage.all.xml"
       - name: Upload Coverage
-        if: ${{ always() }}
+#        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: coverage
