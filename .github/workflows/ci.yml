@@ -130,11 +130,11 @@ jobs:
           - bitness:
               name: x32
             os:
-              name: macos
+              matrix: macos
           - bitness:
               name: x32
             os:
-              name: Windows
+              matrix: windows
             qt:
               major: 6
 
