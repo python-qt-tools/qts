@@ -108,15 +108,19 @@ jobs:
           - name: PyQt 5.15.4
             tox_qt: 5
             tox_wrapper: pyqt
+            matrix_major: 5
           - name: PyQt 6.1.0
             tox_qt: 6
             tox_wrapper: pyqt
+            matrix_major: 6
           - name: PySide 5.15.2
             tox_qt: 5
             tox_wrapper: pyside
+            matrix_major: 5
           - name: PySide 6.1.0
             tox_qt: 6
             tox_wrapper: pyside
+            matrix_major: 6
         bitness:
           - name: x32
             action: x86
@@ -136,7 +140,7 @@ jobs:
             os:
               matrix: windows
             qt:
-              major: 6
+              matrix_major: 6
 
     env:
       TOXENV: ${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
