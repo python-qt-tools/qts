@@ -1,0 +1,1 @@
+Qts is presently an exploratory project that may turn into a Qt5/6 and PyQt/PySide compatibility layer.

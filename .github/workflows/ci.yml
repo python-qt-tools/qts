@@ -1,0 +1,228 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}
+    runs-on: ${{ matrix.os.runs-on }}
+    container: ${{ format(matrix.os.container, matrix.python.docker) }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: Linux
+            runs-on: ubuntu-latest
+            python_platform: linux
+            container: docker://python:{0}-buster
+        python:
+          - name: 3.8
+            action: 3.8
+            docker: 3.8
+        task:
+          - name: Build
+            tox: build
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up Python ${{ matrix.python.name }}-${{ matrix.bitness.name }}
+        if: matrix.os.python_platform != 'linux'
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.action }}
+          architecture: ${{ matrix.bitness.action }}
+      - name: pip/setuptools/tox
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install tox
+      - name: Runner info
+        uses: twisted/python-info-action@v1
+      - name: tox
+        run: tox -e ${{ matrix.task.tox }}
+      - name: Publish
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist/
+  test:
+    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }} ${{ matrix.qt.name }}
+    runs-on: ${{ matrix.os.runs-on }}
+    container: ${{ matrix.os.container[matrix.python.docker] }}
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: Linux
+            runs-on: ubuntu-latest
+            container:
+              2.7: docker://python:2.7-buster
+              3.5: docker://python:3.5-buster
+              3.6: docker://python:3.6-buster
+              3.7: docker://python:3.7-buster
+              3.8: docker://python:3.8-buster
+              3.9: docker://python:3.9-buster
+              miniconda3: docker://continuumio/miniconda3
+            matrix: linux
+          - name: Windows
+            runs-on: windows-latest
+            matrix: windows
+          - name: macOS
+            runs-on: macos-latest
+            matrix: macos
+        python:
+          - name: 3.6
+            tox: py36
+            action: 3.6
+            docker: 3.6
+            matrix: cpython3.6
+          - name: 3.7
+            tox: py37
+            action: 3.7
+            docker: 3.7
+            matrix: cpython3.7
+          - name: 3.8
+            tox: py38
+            action: 3.8
+            docker: 3.8
+            matrix: cpython3.8
+          - name: 3.9
+            tox: py39
+            action: 3.9
+            docker: 3.9
+            matrix: cpython3.9
+        qt:
+          - name: PyQt 5.15.4
+            tox_qt: 5
+            tox_wrapper: pyqt
+          - name: PyQt 6.1.0
+            tox_qt: 6
+            tox_wrapper: pyqt
+          - name: PySide 5.15.2
+            tox_qt: 5
+            tox_wrapper: pyside
+          - name: PySide 6.1.0
+            tox_qt: 6
+            tox_wrapper: pyside
+        bitness:
+          - name: x32
+            action: x86
+          - name: x64
+            action: x64
+        exclude:
+          - bitness:
+              name: x32
+            os:
+              matrix: linux
+          - bitness:
+              name: x32
+            os:
+              name: macos
+          - bitness:
+              name: x32
+            os:
+              name: Windows
+            qt:
+              major: 6
+
+    env:
+      TOXENV: ${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Download
+        uses: actions/download-artifact@v1
+        with:
+          name: ${{ matrix.qt.name }}
+          path: dist/
+      - name: Set up Python ${{ matrix.python.name }}-${{ matrix.bitness.name }}
+        if: matrix.os.matrix != 'linux'
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.action }}
+          architecture: ${{ matrix.bitness.action }}
+      - name: pip/setuptools/tox
+        run: |
+          python -m pip install --upgrade pip setuptools
+          pip install tox
+      - name: Set WHEEL_PATH
+        shell: python
+        run: |
+          import os
+          import pathlib
+
+          fspath = getattr(os, 'fspath', str)
+
+          dist = pathlib.Path.cwd() / 'dist'
+          [wheel] = dist.glob('*.whl')
+
+          with open(os.environ['GITHUB_ENV'], 'a') as github_env:
+              github_env.write('WHEEL_PATH={}\n'.format(fspath(wheel)))
+              github_env.write('WHEEL_STEM={}\n'.format(wheel.stem))
+      - name: Install Linux test dependencies
+        if: matrix.os.matrix == 'linux'
+        run: |
+          apt-get update --yes
+          apt-get install --yes libgl1-mesa-dev libdbus-1-3 libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 xvfb x11-utils
+      - name: Create tox env
+        run: |
+          tox --notest -e ${{ env.TOXENV }} --installpkg ${{ env['WHEEL_PATH'] }}
+      - name: Runner info
+        uses: twisted/python-info-action@v1
+      - name: tox info
+        uses: twisted/python-info-action@v1
+        with:
+          python-path: .tox/${{ env.TOXENV }}/*/python
+      - name: Run tox tests
+        run: |
+          tox --skip-pkg-install -e ${{ env.TOXENV }}
+
+  maybe_publish:
+    name: Maybe Publish
+    runs-on: ubuntu-latest
+    container: docker://python:3.8-buster
+    needs:
+      - test
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Download all wheels
+        uses: actions/download-artifact@v1
+        with:
+          name: all_wheels
+          path: dist/
+      - name: Install Python packages
+        run: |
+          pip install --upgrade twine
+      - name: Maybe publish
+        run: |
+          python .github/twineontag.py
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+  all:
+    name: All
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - test
+      - maybe_publish
+    steps:
+      - name: This
+        shell: python
+        run: |
+          import this
