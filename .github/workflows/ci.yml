@@ -209,7 +209,7 @@ jobs:
       - name: Download all wheels
         uses: actions/download-artifact@v1
         with:
-          name: all_wheels
+          name: dist
           path: dist/
       - name: Install Python packages
         run: |
