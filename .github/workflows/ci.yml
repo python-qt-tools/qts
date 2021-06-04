@@ -55,7 +55,7 @@ jobs:
           name: dist
           path: dist/
   test:
-    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }} ${{ matrix.qt.name }}
+    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ matrix.os.container[matrix.python.docker] }}
     needs:
