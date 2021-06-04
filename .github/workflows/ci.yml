@@ -22,7 +22,7 @@ jobs:
           - name: Build
             tox: build
         os:
-          - name: Linux
+          - name: 🐧
             runs-on: ubuntu-latest
             python_platform: linux
             container: docker://python:{0}-buster
@@ -66,7 +66,7 @@ jobs:
         task:
           - name: Test
         os:
-          - name: Linux
+          - name: 🐧
             runs-on: ubuntu-latest
             container:
               2.7: docker://python:2.7-buster
@@ -77,10 +77,10 @@ jobs:
               3.9: docker://python:3.9-buster
               miniconda3: docker://continuumio/miniconda3
             matrix: linux
-          - name: Windows
+          - name: 🪟
             runs-on: windows-latest
             matrix: windows
-          - name: macOS
+          - name: 🍎
             runs-on: macos-latest
             matrix: macos
         python:
