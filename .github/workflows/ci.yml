@@ -294,6 +294,9 @@ jobs:
           - name: 3.8
             action: 3.8
             docker: 3.8
+        bitness:
+          - name: x64
+            action: x64
 
     env:
       TOXENV: ${{ matrix.task.tox }}
@@ -325,13 +328,13 @@ jobs:
         run: |
           tox --skip-pkg-install -e ${{ env.TOXENV }}
       - name: Coverage Processing
-        if: always()
+        if: ${{ always() }}
         run: |
           mkdir all_coverage_report
           cp .coverage "all_coverage_report/.coverage.all"
           cp coverage.xml "all_coverage_report/coverage.all.xml"
       - name: Upload Coverage
-        if: always()
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: coverage
