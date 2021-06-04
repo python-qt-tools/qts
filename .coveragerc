@@ -16,4 +16,4 @@ exclude_lines =
 [run]
 branch = True
 source =
-    qst
+    qts
