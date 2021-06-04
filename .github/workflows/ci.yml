@@ -18,8 +18,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        task:
+          - name: Build
+            tox: build
         os:
-          - name: Linux
+          - name: 🐧
             runs-on: ubuntu-latest
             python_platform: linux
             container: docker://python:{0}-buster
@@ -27,9 +30,6 @@ jobs:
           - name: 3.8
             action: 3.8
             docker: 3.8
-        task:
-          - name: Build
-            tox: build
 
     steps:
       - uses: actions/checkout@v1
@@ -55,7 +55,7 @@ jobs:
           name: dist
           path: dist/
   test:
-    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }} ${{ matrix.qt.name }}
+    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ matrix.os.container[matrix.python.docker] }}
     needs:
@@ -63,8 +63,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        task:
+          - name: Test
         os:
-          - name: Linux
+          - name: 🐧
             runs-on: ubuntu-latest
             container:
               2.7: docker://python:2.7-buster
@@ -75,10 +77,10 @@ jobs:
               3.9: docker://python:3.9-buster
               miniconda3: docker://continuumio/miniconda3
             matrix: linux
-          - name: Windows
+          - name: 🪟
             runs-on: windows-latest
             matrix: windows
-          - name: macOS
+          - name: 🍎
             runs-on: macos-latest
             matrix: macos
         python:
@@ -106,15 +108,19 @@ jobs:
           - name: PyQt 5.15.4
             tox_qt: 5
             tox_wrapper: pyqt
+            matrix_major: 5
           - name: PyQt 6.1.0
             tox_qt: 6
             tox_wrapper: pyqt
+            matrix_major: 6
           - name: PySide 5.15.2
             tox_qt: 5
             tox_wrapper: pyside
+            matrix_major: 5
           - name: PySide 6.1.0
             tox_qt: 6
             tox_wrapper: pyside
+            matrix_major: 6
         bitness:
           - name: x32
             action: x86
@@ -128,13 +134,13 @@ jobs:
           - bitness:
               name: x32
             os:
-              name: macos
+              matrix: macos
           - bitness:
               name: x32
             os:
-              name: Windows
+              matrix: windows
             qt:
-              major: 6
+              matrix_major: 6
 
     env:
       TOXENV: ${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
@@ -146,7 +152,7 @@ jobs:
       - name: Download
         uses: actions/download-artifact@v1
         with:
-          name: ${{ matrix.qt.name }}
+          name: dist
           path: dist/
       - name: Set up Python ${{ matrix.python.name }}-${{ matrix.bitness.name }}
         if: matrix.os.matrix != 'linux'
@@ -203,14 +209,14 @@ jobs:
       - name: Download all wheels
         uses: actions/download-artifact@v1
         with:
-          name: all_wheels
+          name: dist
           path: dist/
       - name: Install Python packages
         run: |
           pip install --upgrade twine
       - name: Maybe publish
         run: |
-          python .github/twineontag.py
+          python scripts/twineontag.py
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
