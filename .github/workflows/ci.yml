@@ -210,7 +210,7 @@ jobs:
           pip install --upgrade twine
       - name: Maybe publish
         run: |
-          python .github/twineontag.py
+          python scripts/twineontag.py
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
