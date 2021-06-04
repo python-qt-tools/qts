@@ -146,7 +146,7 @@ jobs:
       - name: Download
         uses: actions/download-artifact@v1
         with:
-          name: ${{ matrix.qt.name }}
+          name: dist
           path: dist/
       - name: Set up Python ${{ matrix.python.name }}-${{ matrix.bitness.name }}
         if: matrix.os.matrix != 'linux'
