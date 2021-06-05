@@ -15,9 +15,11 @@ def setup_qts_fixture():
 @pytest.fixture(autouse=True, name="qt_application", scope="session")
 def qt_application_fixture(setup_qts):
     from qts import QtCore
+
     qt_application = QtCore.QCoreApplication([])
 
     return qt_application
+
 
 @pytest.fixture(
     name="any_wrapper",
