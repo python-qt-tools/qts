@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}
+    name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}-${{ matrix.bitness.name}}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ format(matrix.os.container, matrix.python.docker) }}
     strategy:
@@ -22,7 +22,8 @@ jobs:
           - name: Build
             tox: build
         os:
-          - name: 🐧
+          - name: Linux
+            icon: 🐧
             runs-on: ubuntu-latest
             python_platform: linux
             container: docker://python:{0}-buster
@@ -30,6 +31,9 @@ jobs:
           - name: 3.8
             action: 3.8
             docker: 3.8
+        bitness:
+          - name: x64
+            action: x64
 
     steps:
       - uses: actions/checkout@v1
@@ -56,7 +60,7 @@ jobs:
           path: dist/
 
   check:
-    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}
+    name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}-${{ matrix.bitness.name}}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ format(matrix.os.container, matrix.python.docker) }}
     strategy:
@@ -66,7 +70,8 @@ jobs:
           - name: Black
             tox: black
         os:
-          - name: 🐧
+          - name: Linux
+            icon: 🐧
             runs-on: ubuntu-latest
             python_platform: linux
             container: docker://python:{0}-buster
@@ -74,6 +79,9 @@ jobs:
           - name: 3.8
             action: 3.8
             docker: 3.8
+        bitness:
+          - name: x64
+            action: x64
 
     env:
       TOXENV: ${{ matrix.task.tox }}
@@ -111,7 +119,8 @@ jobs:
           path: dist/
 
   test:
-    name: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
+    # Should match JOB_NAME below (except icon/name)
+    name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ matrix.os.container[matrix.python.docker] }}
     needs:
@@ -121,8 +130,10 @@ jobs:
       matrix:
         task:
           - name: Test
+            coverage: true
         os:
-          - name: 🐧
+          - name: Linux
+            icon: 🐧
             runs-on: ubuntu-latest
             container:
               2.7: docker://python:2.7-buster
@@ -133,10 +144,12 @@ jobs:
               3.9: docker://python:3.9-buster
               miniconda3: docker://continuumio/miniconda3
             matrix: linux
-          - name: 🪟
+          - name: Windows
+            icon: 🪟
             runs-on: windows-latest
             matrix: windows
-          - name: 🍎
+          - name: macOS
+            icon: 🍎
             runs-on: macos-latest
             matrix: macos
         python:
@@ -200,6 +213,8 @@ jobs:
 
     env:
       TOXENV: ${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
+      # Should match name above (except icon/name)
+      JOB_NAME: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
 
     steps:
       - uses: actions/checkout@v1
@@ -251,6 +266,87 @@ jobs:
       - name: Run tox env
         run: |
           tox --skip-pkg-install -e ${{ env.TOXENV }}
+      - name: Coverage Processing
+        if: matrix.task.coverage
+        run: |
+          mkdir coverage_reports
+          cp .coverage "coverage_reports/.coverage.${{ env.JOB_NAME }}"
+          cp coverage.xml "coverage_reports/coverage.${{ env.JOB_NAME }}.xml"
+      - name: Upload Coverage
+        if: matrix.task.coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage_reports/*
+
+  coverage:
+    name: ${{ matrix.task.name }} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}}
+    runs-on: ${{ matrix.os.runs-on }}
+    if: always()
+    needs:
+      - test
+    container: ${{ format(matrix.os.container, matrix.python.docker) }}
+    strategy:
+      fail-fast: false
+      matrix:
+        task:
+          - name: Coverage
+            tox: combined-coverage
+        os:
+          - name: 🐧
+            runs-on: ubuntu-latest
+            python_platform: linux
+            container: docker://python:{0}-buster
+        python:
+          - name: 3.8
+            action: 3.8
+            docker: 3.8
+        bitness:
+          - name: x64
+            action: x64
+
+    env:
+      TOXENV: ${{ matrix.task.tox }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install
+        run: |
+          pip install --upgrade pip setuptools wheel
+          pip install tox
+      - uses: twisted/python-info-action@v1
+      - name: Download Coverage
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage
+          path: coverage_reports
+      - name: Create tox env
+        run: |
+          tox --notest -e ${{ env.TOXENV }}
+      - name: Runner info
+        uses: twisted/python-info-action@v1
+      - name: tox info
+        uses: twisted/python-info-action@v1
+        with:
+          python-path: .tox/${{ env.TOXENV }}/*/python
+      - name: Run tox env
+        run: |
+          tox --skip-pkg-install -e ${{ env.TOXENV }}
+      - name: Coverage Processing
+        if: ${{ always() }}
+        run: |
+          mkdir all_coverage_report
+          cp .coverage "all_coverage_report/.coverage.all"
+          cp coverage.xml "all_coverage_report/coverage.all.xml"
+      - name: Upload Coverage
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: all_coverage_report/*
 
   maybe_publish:
     name: Maybe Publish
@@ -276,6 +372,7 @@ jobs:
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+
   all:
     name: All
     runs-on: ubuntu-latest
@@ -283,6 +380,7 @@ jobs:
       - build
       - check
       - test
+      - coverage
       - maybe_publish
     steps:
       - name: This
