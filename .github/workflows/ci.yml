@@ -119,7 +119,7 @@ jobs:
           path: dist/
 
   test:
-    # Should match JOB_NAME below
+    # Should match JOB_NAME below (except icon/name)
     name: ${{ matrix.task.name}} - ${{ matrix.os.icon }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
     runs-on: ${{ matrix.os.runs-on }}
     container: ${{ matrix.os.container[matrix.python.docker] }}
@@ -213,7 +213,7 @@ jobs:
 
     env:
       TOXENV: ${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
-      # Should match name above
+      # Should match name above (except icon/name)
       JOB_NAME: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
 
     steps:
