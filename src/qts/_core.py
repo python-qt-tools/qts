@@ -7,16 +7,17 @@ import qts
 
 @attr.frozen
 class Wrapper:
+    family: str
     name: str
     major_version: int
     module_name: str
 
 
 wrappers = [pyqt_5_wrapper, pyqt_6_wrapper, pyside_5_wrapper, pyside_6_wrapper] = [
-    Wrapper(name="PyQt5", major_version=5, module_name="PyQt5"),
-    Wrapper(name="PyQt6", major_version=6, module_name="PyQt6"),
-    Wrapper(name="PySide2", major_version=5, module_name="PySide2"),
-    Wrapper(name="PySide6", major_version=6, module_name="PySide6"),
+    Wrapper(family="PyQt", name="PyQt5", major_version=5, module_name="PyQt5"),
+    Wrapper(family="PyQt", name="PyQt6", major_version=6, module_name="PyQt6"),
+    Wrapper(family="PySide", name="PySide2", major_version=5, module_name="PySide2"),
+    Wrapper(family="PySide", name="PySide6", major_version=6, module_name="PySide6"),
 ]
 
 wrappers_by_name = {wrapper.name: wrapper for wrapper in wrappers}
