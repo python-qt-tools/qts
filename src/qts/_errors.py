@@ -39,7 +39,7 @@ class NoWrapperSelectedError(QtsError):
 
 
 def name_or_repr(wrapper):
-    return getattr(wrapper, 'name', repr(wrapper))
+    return getattr(wrapper, "name", repr(wrapper))
 
 
 class WrapperAlreadySelectedError(QtsError):
