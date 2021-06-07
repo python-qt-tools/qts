@@ -12,7 +12,7 @@ class InvalidWrapperError(QtsError):
         super().__init__(f"Unkown wrapper specified: {wrapper!r}")
 
 
-class MultipleWrappersAvailable(QtsError):
+class MultipleWrappersAvailableError(QtsError):
     """Raised when searching for one wrapper but multiple are available."""
 
     def __init__(self, searched, found):
@@ -21,7 +21,7 @@ class MultipleWrappersAvailable(QtsError):
         super().__init__(f"Found {found_list} while searching through {searched_list}")
 
 
-class NoWrapperAvailable(QtsError):
+class NoWrapperAvailableError(QtsError):
     """Raised when searching for wrappers and none are available."""
 
     def __init__(self, wrappers):
@@ -38,12 +38,16 @@ class NoWrapperSelectedError(QtsError):
         super().__init__("No wrapper selected, see qts.set_wrapper()")
 
 
+def name_or_repr(wrapper):
+    return getattr(wrapper, 'name', repr(wrapper))
+
+
 class WrapperAlreadySelectedError(QtsError):
     """Raised when attempting to set a wrapper but one has already been selected."""
 
     def __init__(self, existing_wrapper, requested_wrapper):
-        message = (
-            f"Wrapper {existing_wrapper.name} already selected while requesting"
-            f" {requested_wrapper.name}"
+        existing = name_or_repr(wrapper=existing_wrapper)
+        requested = name_or_repr(wrapper=requested_wrapper)
+        super().__init__(
+            f"Wrapper {existing} already selected while requesting {requested}",
         )
-        super().__init__(message)

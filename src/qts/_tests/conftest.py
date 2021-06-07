@@ -37,11 +37,11 @@ qts.set_wrapper(available_wrapper)
 other_wrappers = [wrapper for wrapper in qts.wrappers if wrapper != available_wrapper]
 
 
-@pytest.fixture(
-    name="other_wrapper",
-    scope="session",
-    params=other_wrappers,
-    ids=[wrapper.name for wrapper in other_wrappers],
-)
-def other_wrapper_fixture(request: pytest.FixtureRequest, setup_qts):
-    return request.param
+# @pytest.fixture(
+#     name="other_wrapper",
+#     scope="session",
+#     params=other_wrappers,
+#     ids=[wrapper.name for wrapper in other_wrappers],
+# )
+# def other_wrapper_fixture(request: pytest.FixtureRequest, setup_qts):
+#     return request.param

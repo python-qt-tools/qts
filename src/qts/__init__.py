@@ -14,8 +14,8 @@ from qts._core import (
 )
 from qts._errors import (
     InvalidWrapperError,
-    MultipleWrappersAvailable,
-    NoWrapperAvailable,
+    MultipleWrappersAvailableError,
+    NoWrapperAvailableError,
     NoWrapperSelectedError,
     QtsError,
     WrapperAlreadySelectedError,

@@ -30,7 +30,10 @@ def set_wrapper(wrapper: Wrapper):
     # developers get early warning and can adjust their design.
 
     if qts.wrapper is not None:
-        raise qts.WrapperAlreadySelectedError()
+        raise qts.WrapperAlreadySelectedError(
+            existing_wrapper=qts.wrapper,
+            requested_wrapper=wrapper,
+        )
 
     if wrapper not in wrappers:
         raise qts.InvalidWrapperError(wrapper=wrapper)
@@ -45,13 +48,13 @@ def available_wrappers(wrappers=wrappers):
     return available
 
 
-def available_wrapper():
+def available_wrapper(wrappers=wrappers):
     all_available = available_wrappers(wrappers=wrappers)
 
     if len(all_available) == 0:
-        raise qts.NoWrapperAvailable(wrappers=wrappers)
+        raise qts.NoWrapperAvailableError(wrappers=wrappers)
     elif len(all_available) > 1:
-        raise qts.MultipleWrappersAvailable
+        raise qts.MultipleWrappersAvailableError(searched=wrappers, found=all_available)
 
     [the_one] = all_available
     return the_one
