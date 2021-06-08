@@ -27,3 +27,7 @@ del get_versions
 
 
 wrapper: typing.Optional[Wrapper] = None
+is_pyqt_5_wrapper: bool = False
+is_pyqt_6_wrapper: bool = False
+is_pyside_5_wrapper: bool = False
+is_pyside_6_wrapper: bool = False

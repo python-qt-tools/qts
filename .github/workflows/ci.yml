@@ -278,6 +278,16 @@ jobs:
         with:
           name: coverage
           path: coverage_reports/*
+      - name: Create tox env
+        run: |
+          tox --notest -e mypy-${{ env.TOXENV }} --installpkg ${{ env['WHEEL_PATH'] }}
+      - name: tox info
+        uses: twisted/python-info-action@v1
+        with:
+          python-path: .tox/${{ env.TOXENV }}/*/python
+      - name: Run tox env
+        run: |
+          tox --skip-pkg-install -e mypy-${{ env.TOXENV }}
 
   coverage:
     name: ${{ matrix.task.name }} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}}

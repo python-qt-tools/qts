@@ -1,3 +1,5 @@
+# https://github.com/pytest-dev/pytest/issues/7469
+import _pytest.fixtures
 import pytest
 
 import qts
@@ -21,13 +23,19 @@ def qt_application_fixture(setup_qts):
     return qt_application
 
 
+@pytest.fixture(name="wrapper", scope="session")
+def wrapper_fixture(setup_qts) -> qts.Wrapper:
+    assert qts.wrapper is not None
+    return qts.wrapper
+
+
 @pytest.fixture(
     name="any_wrapper",
     scope="session",
     params=qts.wrappers,
     ids=[wrapper.name for wrapper in qts.wrappers],
 )
-def any_wrapper_fixture(request: pytest.FixtureRequest, setup_qts):
+def any_wrapper_fixture(request: _pytest.fixtures.SubRequest, setup_qts):
     return request.param
 
 
