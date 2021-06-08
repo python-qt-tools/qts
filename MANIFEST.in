@@ -1,6 +1,7 @@
 include LICENSE
 graft src
 include .coveragerc
+include mypy.ini
 include tox.ini
 recursive-include scripts *.py
 recursive-include scripts *.sh
