@@ -20,7 +20,9 @@ def mypy():
     "--wrapper",
     "wrapper_name",
     default=None,
-    type=click.Choice(case_sensitive=False, choices=[wrapper.name for wrapper in qts.wrappers]),
+    type=click.Choice(
+        case_sensitive=False, choices=[wrapper.name for wrapper in qts.wrappers]
+    ),
 )
 @click.option(
     "--delimiter",
