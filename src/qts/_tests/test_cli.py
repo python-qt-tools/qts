@@ -12,7 +12,7 @@ import pytest
 import qts
 
 
-script_path = pathlib.Path(sysconfig.get_path("scripts"), "qts")
+script_path = pathlib.Path(typing.cast(str, sysconfig.get_path("scripts")), "qts")
 
 
 # https://github.com/altendky/ssst/blob/1e23bf26a47b48d714ae643f5d8af95394172464/src/ssst/_tests/test_cli.py#L74-L109
