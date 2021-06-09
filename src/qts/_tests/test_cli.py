@@ -102,7 +102,11 @@ def launch_command_fixture(
     ],
 )
 def test_(
-    launch_command, argument, expected_result, delimiter_argument, delimiter_result
+    launch_command,
+    argument,
+    expected_result,
+    delimiter_argument,
+    delimiter_result,
 ) -> None:
     args = [*launch_command, "mypy", "args", "--wrapper", argument]
     if delimiter_argument is not None:
