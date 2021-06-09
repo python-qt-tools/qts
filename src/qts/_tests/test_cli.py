@@ -70,7 +70,7 @@ def launch_command_fixture(
                 f"--always-{'true' if qts.is_pyqt_6_wrapper else 'false'}=is_pyqt_6_wrapper",
                 f"--always-{'true' if qts.is_pyside_5_wrapper else 'false'}=is_pyside_5_wrapper",
                 f"--always-{'true' if qts.is_pyside_6_wrapper else 'false'}=is_pyside_6_wrapper",
-            ]
+            ],
         ],
         [
             "pyqt5",
