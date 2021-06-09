@@ -6,3 +6,4 @@ include tox.ini
 recursive-include scripts *.py
 recursive-include scripts *.sh
 global-exclude *.pyc
+include constraints*.txt
