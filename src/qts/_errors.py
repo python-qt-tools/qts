@@ -13,7 +13,7 @@ class InvalidWrapperError(QtsError):
     """Raised when an invalid wrapper is specified."""
 
     def __init__(self, wrapper):
-        super().__init__(f"Unkown wrapper specified: {wrapper!r}")
+        super().__init__(f"Unknown wrapper specified: {wrapper!r}")
 
 
 class MultipleWrappersAvailableError(QtsError):
