@@ -5,6 +5,10 @@ class QtsError(Exception):
     """
 
 
+class InternalError(QtsError):
+    """Raised when things that should not happen do, and they aren't the user's fault."""
+
+
 class InvalidWrapperError(QtsError):
     """Raised when an invalid wrapper is specified."""
 

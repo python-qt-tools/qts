@@ -3,7 +3,7 @@ import pytest
 import qts
 
 
-def test_set_wrapper_succeeds(pytester: pytest.Pytester):
+def test_set_wrapper_succeeds(pytester: pytest.Pytester, wrapper: qts.Wrapper):
     content = f"""
     import sys
 
@@ -11,12 +11,12 @@ def test_set_wrapper_succeeds(pytester: pytest.Pytester):
 
 
     def test():
-        assert {qts.wrapper.module_name!r} not in sys.modules
-        wrapper = qts.wrapper_by_name(name={qts.wrapper.module_name!r})
+        assert {wrapper.module_name!r} not in sys.modules
+        wrapper = qts.wrapper_by_name(name={wrapper.module_name!r})
         qts.set_wrapper(wrapper)
         from qts import QtCore
         imported_top_level_module_name = QtCore.QObject.__module__.partition('.')[0]
-        assert imported_top_level_module_name == {qts.wrapper.module_name!r}
+        assert imported_top_level_module_name == {wrapper.module_name!r}
     """
     pytester.makepyfile(content)
     run_result = pytester.runpytest_subprocess()

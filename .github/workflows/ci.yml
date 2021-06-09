@@ -131,6 +131,8 @@ jobs:
         task:
           - name: Test
             coverage: true
+          - name: mypy
+            tox: mypy
         os:
           - name: Linux
             icon: 🐧
@@ -212,7 +214,7 @@ jobs:
               matrix_major: 6
 
     env:
-      TOXENV: ${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
+      TOXENV: ${{ matrix.task.tox }}${{ fromJSON('["", "-"]')[matrix.task.tox != null] }}${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
       # Should match name above (except icon/name)
       JOB_NAME: ${{ matrix.task.name}} - ${{ matrix.os.name }} ${{ matrix.python.name }}-${{ matrix.bitness.name}} ${{ matrix.qt.name }}
 

@@ -20,7 +20,7 @@ wrappers = [pyqt_5_wrapper, pyqt_6_wrapper, pyside_5_wrapper, pyside_6_wrapper] 
     Wrapper(family="PySide", name="PySide6", major_version=6, module_name="PySide6"),
 ]
 
-wrappers_by_name = {wrapper.name: wrapper for wrapper in wrappers}
+wrappers_by_name = {wrapper.name.casefold(): wrapper for wrapper in wrappers}
 
 
 def set_wrapper(wrapper: Wrapper):
@@ -39,6 +39,11 @@ def set_wrapper(wrapper: Wrapper):
         raise qts.InvalidWrapperError(wrapper=wrapper)
 
     qts.wrapper = wrapper
+
+    qts.is_pyqt_5_wrapper = wrapper == pyqt_5_wrapper
+    qts.is_pyqt_6_wrapper = wrapper == pyqt_6_wrapper
+    qts.is_pyside_5_wrapper = wrapper == pyside_5_wrapper
+    qts.is_pyside_6_wrapper = wrapper == pyside_6_wrapper
 
 
 def available_wrappers(wrappers=wrappers):
@@ -61,4 +66,4 @@ def available_wrapper(wrappers=wrappers):
 
 
 def wrapper_by_name(name: str):
-    return wrappers_by_name[name]
+    return wrappers_by_name[name.casefold()]
