@@ -1,8 +1,14 @@
+import typing
+
 # TODO: https://github.com/pytest-dev/pytest/issues/7469
 import _pytest.fixtures
 import pytest
 
 import qts
+
+
+if typing.TYPE_CHECKING:
+    from qts import QtCore
 
 
 pytest_plugins = "pytester"
