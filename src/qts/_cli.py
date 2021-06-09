@@ -6,12 +6,12 @@ import qts
 
 
 @click.group()
-def main():
+def main() -> None:
     pass
 
 
 @main.group()
-def mypy():
+def mypy() -> None:
     pass
 
 
@@ -32,7 +32,7 @@ def mypy():
     help="Defaults to a space for TTYs and a newline otherwise.",
     type=str,
 )
-def args(wrapper_name, delimiter):
+def args(wrapper_name: str, delimiter: str) -> None:
     # TODO: make this selectable
     if wrapper_name is None:
         wrapper = qts.available_wrapper()
