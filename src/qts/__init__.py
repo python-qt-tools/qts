@@ -13,6 +13,7 @@ from qts._core import (
     wrappers,
 )
 from qts._errors import (
+    InternalError,
     InvalidWrapperError,
     MultipleWrappersAvailableError,
     NoWrapperAvailableError,
