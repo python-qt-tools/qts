@@ -15,12 +15,12 @@ class Wrapper:
 
 
 wrappers = [pyqt_5_wrapper, pyqt_6_wrapper, pyside_5_wrapper, pyside_6_wrapper] = [
-    qts.Wrapper(family="PyQt", name="PyQt5", major_version=5, module_name="PyQt5"),
-    qts.Wrapper(family="PyQt", name="PyQt6", major_version=6, module_name="PyQt6"),
-    qts.Wrapper(
+    Wrapper(family="PyQt", name="PyQt5", major_version=5, module_name="PyQt5"),
+    Wrapper(family="PyQt", name="PyQt6", major_version=6, module_name="PyQt6"),
+    Wrapper(
         family="PySide", name="PySide2", major_version=5, module_name="PySide2"
     ),
-    qts.Wrapper(
+    Wrapper(
         family="PySide", name="PySide6", major_version=6, module_name="PySide6"
     ),
 ]
@@ -28,7 +28,7 @@ wrappers = [pyqt_5_wrapper, pyqt_6_wrapper, pyside_5_wrapper, pyside_6_wrapper] 
 wrappers_by_name = {wrapper.name.casefold(): wrapper for wrapper in wrappers}
 
 
-def set_wrapper(wrapper: qts.Wrapper) -> None:
+def set_wrapper(wrapper: Wrapper) -> None:
     # This could accept the new wrapper if it matches the existing selection, but this
     # seems like it would mostly just encourage coding that hazards setting to a
     # different wrapper in some other case.  May as well complain early so that
@@ -52,15 +52,15 @@ def set_wrapper(wrapper: qts.Wrapper) -> None:
 
 
 def available_wrappers(
-    wrappers: typing.Iterable[qts.Wrapper] = wrappers,
-) -> typing.Sequence[qts.Wrapper]:
+    wrappers: typing.Iterable[Wrapper] = wrappers,
+) -> typing.Sequence[Wrapper]:
     available = [
         wrapper for wrapper in wrappers if importlib.util.find_spec(wrapper.module_name)
     ]
     return available
 
 
-def available_wrapper(wrappers: typing.Iterable[qts.Wrapper] = wrappers) -> qts.Wrapper:
+def available_wrapper(wrappers: typing.Iterable[Wrapper] = wrappers) -> Wrapper:
     all_available = available_wrappers(wrappers=wrappers)
 
     if len(all_available) == 0:
@@ -72,5 +72,5 @@ def available_wrapper(wrappers: typing.Iterable[qts.Wrapper] = wrappers) -> qts.
     return the_one
 
 
-def wrapper_by_name(name: str) -> qts.Wrapper:
+def wrapper_by_name(name: str) -> Wrapper:
     return wrappers_by_name[name.casefold()]

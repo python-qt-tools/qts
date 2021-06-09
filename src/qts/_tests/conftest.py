@@ -4,8 +4,6 @@ import pytest
 
 import qts
 
-from qts import QtCore
-
 
 pytest_plugins = "pytester"
 
@@ -17,7 +15,7 @@ def setup_qts_fixture() -> None:
 
 
 @pytest.fixture(autouse=True, name="qt_application", scope="session")
-def qt_application_fixture(setup_qts: None) -> QtCore.QCoreApplication:
+def qt_application_fixture(setup_qts: None) -> "QtCore.QCoreApplication":
     from qts import QtCore
 
     qt_application = QtCore.QCoreApplication([])
