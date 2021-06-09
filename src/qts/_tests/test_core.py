@@ -3,7 +3,7 @@ import pytest
 import qts
 
 
-def test_set_wrapper_succeeds(pytester: pytest.Pytester, wrapper: qts.Wrapper):
+def test_set_wrapper_succeeds(pytester: pytest.Pytester, wrapper: qts.Wrapper) -> None:
     content = f"""
     import sys
 

@@ -111,11 +111,11 @@ def launch_command_fixture(
     ],
 )
 def test_(
-    launch_command,
-    argument,
-    expected_result,
-    delimiter_argument,
-    delimiter_result,
+    launch_command: typing.List[str],
+    argument: typing.Optional[str],
+    expected_result: typing.List[str],
+    delimiter_argument: typing.Optional[str],
+    delimiter_result: str,
 ) -> None:
     args = [*launch_command, "mypy", "args"]
     if argument is not None:

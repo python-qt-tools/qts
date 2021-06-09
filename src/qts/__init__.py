@@ -23,7 +23,7 @@ from qts._errors import (
 )
 from qts._version import get_versions
 
-__version__ = get_versions()["version"]
+__version__: str = get_versions()["version"]  # type: ignore[no-untyped-call]
 del get_versions
 
 

@@ -1,4 +1,5 @@
 import importlib.util
+import typing
 
 import attr
 
@@ -23,7 +24,7 @@ wrappers = [pyqt_5_wrapper, pyqt_6_wrapper, pyside_5_wrapper, pyside_6_wrapper] 
 wrappers_by_name = {wrapper.name.casefold(): wrapper for wrapper in wrappers}
 
 
-def set_wrapper(wrapper: Wrapper):
+def set_wrapper(wrapper: Wrapper) -> None:
     # This could accept the new wrapper if it matches the existing selection, but this
     # seems like it would mostly just encourage coding that hazards setting to a
     # different wrapper in some other case.  May as well complain early so that
@@ -46,14 +47,16 @@ def set_wrapper(wrapper: Wrapper):
     qts.is_pyside_6_wrapper = wrapper == pyside_6_wrapper
 
 
-def available_wrappers(wrappers=wrappers):
+def available_wrappers(
+    wrappers: typing.Iterable[Wrapper] = wrappers,
+) -> typing.Sequence[Wrapper]:
     available = [
         wrapper for wrapper in wrappers if importlib.util.find_spec(wrapper.module_name)
     ]
     return available
 
 
-def available_wrapper(wrappers=wrappers):
+def available_wrapper(wrappers: typing.Iterable[Wrapper] = wrappers) -> Wrapper:
     all_available = available_wrappers(wrappers=wrappers)
 
     if len(all_available) == 0:
@@ -65,5 +68,5 @@ def available_wrapper(wrappers=wrappers):
     return the_one
 
 
-def wrapper_by_name(name: str):
+def wrapper_by_name(name: str) -> Wrapper:
     return wrappers_by_name[name.casefold()]
