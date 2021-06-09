@@ -46,12 +46,12 @@ def launch_command_fixture(
         #     pytest.skip("Frozen executable specified, skipping non-frozen tests")
 
         return [sys.executable, "-m", "qts"]
-    elif request.param == "frozen":
-        pytest.skip("No frozen target yet")
-        # if frozen_executable is None:
-        #     pytest.skip("Frozen executable not specified, pass via --frozen-executable")
-        #
-        # return [os.fspath(frozen_executable)]
+    # elif request.param == "frozen":
+    #     pytest.skip("No frozen target yet")
+    #     if frozen_executable is None:
+    #         pytest.skip("Frozen executable not specified, pass via --frozen-executable")
+    #
+    #     return [os.fspath(frozen_executable)]
 
     raise qts.InternalError("Unhandled parametrization")  # pragma: no cover
 
@@ -63,6 +63,15 @@ def launch_command_fixture(
 @pytest.mark.parametrize(
     argnames=["argument", "expected_result"],
     argvalues=[
+        [
+            None,
+            [
+                f"--always-{'true' if qts.is_pyqt_5_wrapper else 'false'}=is_pyqt_5_wrapper",
+                f"--always-{'true' if qts.is_pyqt_6_wrapper else 'false'}=is_pyqt_6_wrapper",
+                f"--always-{'true' if qts.is_pyside_5_wrapper else 'false'}=is_pyside_5_wrapper",
+                f"--always-{'true' if qts.is_pyside_6_wrapper else 'false'}=is_pyside_6_wrapper",
+            ]
+        ],
         [
             "pyqt5",
             [
@@ -108,7 +117,9 @@ def test_(
     delimiter_argument,
     delimiter_result,
 ) -> None:
-    args = [*launch_command, "mypy", "args", "--wrapper", argument]
+    args = [*launch_command, "mypy", "args"]
+    if argument is not None:
+        args.extend(["--wrapper", argument])
     if delimiter_argument is not None:
         args.extend(["--delimiter", delimiter_argument])
     completed_process = subprocess.run(
