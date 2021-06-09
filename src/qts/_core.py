@@ -17,12 +17,8 @@ class Wrapper:
 wrappers = [pyqt_5_wrapper, pyqt_6_wrapper, pyside_5_wrapper, pyside_6_wrapper] = [
     Wrapper(family="PyQt", name="PyQt5", major_version=5, module_name="PyQt5"),
     Wrapper(family="PyQt", name="PyQt6", major_version=6, module_name="PyQt6"),
-    Wrapper(
-        family="PySide", name="PySide2", major_version=5, module_name="PySide2"
-    ),
-    Wrapper(
-        family="PySide", name="PySide6", major_version=6, module_name="PySide6"
-    ),
+    Wrapper(family="PySide", name="PySide2", major_version=5, module_name="PySide2"),
+    Wrapper(family="PySide", name="PySide6", major_version=6, module_name="PySide6"),
 ]
 
 wrappers_by_name = {wrapper.name.casefold(): wrapper for wrapper in wrappers}
