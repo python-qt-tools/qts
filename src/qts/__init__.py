@@ -1,3 +1,5 @@
+# mypy: implicit_reexport
+
 import typing
 
 from qts._core import (

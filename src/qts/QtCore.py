@@ -1,3 +1,5 @@
+# mypy: implicit_reexport
+
 import qts
 
 
