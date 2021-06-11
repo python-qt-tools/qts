@@ -52,7 +52,22 @@
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true"
      inkscape:snap-text-baseline="true"
-     inkscape:snap-page="true" />
+     inkscape:snap-page="true">
+    <sodipodi:guide
+       position="25,25"
+       orientation="1,0"
+       id="guide4707"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,0,255)" />
+    <sodipodi:guide
+       position="25,25"
+       orientation="0,1"
+       id="guide4709"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,0,255)" />
+  </sodipodi:namedview>
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -72,7 +87,7 @@
      transform="translate(0,-247)">
     <g
        id="g4681"
-       transform="translate(-21.642509,23.749384)">
+       transform="translate(-21.113342,23.749384)">
       <path
          sodipodi:nodetypes="zzzzz"
          inkscape:connector-curvature="0"
@@ -104,7 +119,7 @@
     </g>
     <g
        id="g4675"
-       transform="translate(-20.537112,23.631262)">
+       transform="translate(-21.066279,23.631262)">
       <use
          height="100%"
          width="100%"
@@ -141,7 +156,7 @@
     <path
        id="path104"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 16.008857,266.37966 c -3.999801,-6.19633 -1.767588,-11.39575 -4.975173,-12.34894 m 10.464028,11.85425 c -2.127431,-6.37649 -7.08797,-12.65564 -10.464028,-11.85425 -1.497319,0.35543 -3.594737,8.06056 -1.583963,14.28748"
+       d="M 13.769202,265.0619 C 8.7105039,259.69511 9.9612313,254.17674 6.6338723,253.82199 m 12.4430417,9.75652 c -3.250193,-5.88403 -9.2686927,-11.15777 -12.4430417,-9.75652 -1.4078588,0.62147 -2.0709267,8.57939 1.0373832,14.33753"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccsc" />
     <use
@@ -154,7 +169,7 @@
        height="100%" />
     <path
        style="fill:#000000;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 22,283.82498 c 0.5,-0.5 5.5,-0.5 6,0 0.5,0.5 -2,5 -3,5 -1,0 -3.5,-4.5 -3,-5 z"
+       d="m 22,285.94166 c 0.5,-0.5 5.5,-0.5 6,0 0.5,0.5 -2,5 -3,5 -1,0 -3.5,-4.5 -3,-5 z"
        id="path4687"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="zzzz" />
