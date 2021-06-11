@@ -1,5 +1,5 @@
-qts - all your Qts are belong to us
-===================================
+qts - use the Qt you've got
+===========================
 
 Resources
 ---------

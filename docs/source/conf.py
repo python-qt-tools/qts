@@ -173,6 +173,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
+html_logo = "../../eyes.svg"
 html_theme_options = {
     # default is 2
     # show deeper nesting in the RTD theme's sidebar TOC
@@ -180,7 +181,7 @@ html_theme_options = {
     # I'm not 100% sure this actually does anything with our current
     # versions/settings...
     "navigation_depth": 4,
-    "logo_only": True,
+    "logo_only": False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
