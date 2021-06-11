@@ -4,7 +4,7 @@ import qts
 
 
 class QtsError(Exception):
-    """Base exception class for all Qts exceptions.
+    """Base exception class for all qts exceptions.
 
     Do not raise directly.
     """
