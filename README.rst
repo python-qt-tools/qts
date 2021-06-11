@@ -11,7 +11,6 @@ Resources
 
 `Repository <repository_>`_        `GitHub <repository_>`_            |repository badge|
 `Tests <tests_>`_                  `GitHub Actions <tests_>`_         |tests badge|
-`Coverage <coverage_>`_            `Codecov <coverage_>`_             |coverage badge|
 
 `Distribution <distribution_>`_    `PyPI <distribution_>`_            | |version badge|
                                                                       | |python versions badge|
@@ -58,8 +57,3 @@ qts is presently an exploratory project that may turn into a Qt5/6 and PyQt/PySi
 .. |tests badge| image:: https://img.shields.io/github/workflow/status/python-qt-tools/qts/CI/main?color=seagreen&logo=GitHub-Actions&logoColor=whitesmoke
    :target: `tests`_
    :alt: Tests
-
-.. _coverage: https://codecov.io/gh/python-qt-tools/qts
-.. |coverage badge| image:: https://img.shields.io/codecov/c/github/python-qt-tools/qts/main?color=seagreen&logo=Codecov&logoColor=whitesmoke
-   :target: `coverage`_
-   :alt: Test coverage

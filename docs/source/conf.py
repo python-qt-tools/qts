@@ -54,11 +54,13 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx_autodoc_typehints",
+    "sphinx_qt_documentation",
     "sphinx_inline_tabs",
 ]
 
 intersphinx_mapping = {
-    # "python": ("https://docs.python.org/3", None),
+    "python": ("https://docs.python.org/3", None),
+    "PyQt5": ("https://www.riverbankcomputing.com/static/Docs/PyQt5", None),
 }
 
 qt_documentation = "Qt5"
