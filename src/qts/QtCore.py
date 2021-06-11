@@ -1,3 +1,7 @@
+# TODO: maybe manage to not bypass this strict check
+#       https://github.com/python-qt-tools/qts/issues/8
+# mypy: implicit_reexport
+
 import qts
 
 
