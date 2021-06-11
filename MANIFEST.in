@@ -7,3 +7,6 @@ recursive-include scripts *.py
 recursive-include scripts *.sh
 global-exclude *.pyc
 include constraints*.txt
+recursive-include docs *
+recursive-exclude docs/build *
+exclude .readthedocs.yml
