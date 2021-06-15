@@ -5,6 +5,7 @@ import _pytest.fixtures
 import pytest
 
 import qts
+import qts._tests
 
 
 if typing.TYPE_CHECKING:
@@ -63,3 +64,12 @@ other_wrappers = [wrapper for wrapper in qts.wrappers if wrapper != available_wr
 # )
 # def other_wrapper_fixture(request: pytest.FixtureRequest, setup_qts):
 #     return request.param
+
+
+@pytest.fixture(
+    name="qt_module",
+    params=qts._tests.qt_modules,
+    ids=[module.name for module in qts._tests.qt_modules],
+)
+def qt_module_fixture(request: _pytest.fixtures.SubRequest) -> qts._tests.QtModule:
+    return request.param  # type: ignore[no-any-return]
