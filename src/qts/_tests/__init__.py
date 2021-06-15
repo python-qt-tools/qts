@@ -7,5 +7,3 @@ class QtModule:
 
 
 qt_modules = [QtModule(name="QtCore")]
-
-
