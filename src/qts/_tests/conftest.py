@@ -1,12 +1,11 @@
 import typing
 
-import attr
-
 # TODO: https://github.com/pytest-dev/pytest/issues/7469
 import _pytest.fixtures
 import pytest
 
 import qts
+import qts._tests
 
 
 if typing.TYPE_CHECKING:
@@ -14,14 +13,6 @@ if typing.TYPE_CHECKING:
 
 
 pytest_plugins = "pytester"
-
-
-@attr.frozen
-class QtModule:
-    name: str
-
-
-qt_modules = [QtModule(name="QtCore")]
 
 
 @pytest.fixture(autouse=True, name="setup_qts", scope="session")
@@ -77,8 +68,8 @@ other_wrappers = [wrapper for wrapper in qts.wrappers if wrapper != available_wr
 
 @pytest.fixture(
     name="qt_module",
-    params=qt_modules,
-    ids=[module.name for module in qt_modules],
+    params=qts._tests.qt_modules,
+    ids=[module.name for module in qts._tests.qt_modules],
 )
-def qt_module_fixture(request):
-    return request.param
+def qt_module_fixture(request: _pytest.fixtures.SubRequest) -> qts._tests.QtModule:
+    return request.param  # type: ignore[no-any-return]

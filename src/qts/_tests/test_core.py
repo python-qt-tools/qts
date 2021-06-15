@@ -56,7 +56,7 @@ def test_setting_invalid_wrapper_raises(pytester: pytest.Pytester) -> None:
 
 def test_importing_with_invalid_wrapper_raises(
     pytester: pytest.Pytester,
-    qt_module: qts._tests.conftest.QtModule,
+    qt_module: qts._tests.QtModule,
 ) -> None:
     content = f"""
     import pytest
@@ -86,7 +86,7 @@ def test_checking_with_multiple_available_wrappers_raises() -> None:
 
 def test_importing_without_setting_raises(
     pytester: pytest.Pytester,
-    qt_module: qts._tests.conftest.QtModule,
+    qt_module: qts._tests.QtModule,
 ) -> None:
     content = f"""
     import pytest
