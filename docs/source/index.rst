@@ -6,5 +6,6 @@
     exceptions.rst
     history.rst
     qtcore.rst
+    qtwidgets.rst
 
 * :ref:`genindex`

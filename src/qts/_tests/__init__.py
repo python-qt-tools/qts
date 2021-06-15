@@ -6,4 +6,4 @@ class QtModule:
     name: str
 
 
-qt_modules = [QtModule(name="QtCore")]
+qt_modules = [QtModule(name="QtCore"), QtModule(name="QtWidgets")]
