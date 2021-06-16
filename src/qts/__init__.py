@@ -42,3 +42,6 @@ is_pyside_5_wrapper: bool = False
 """``True`` if the PySide/Qt5 wrapper is active."""
 is_pyside_6_wrapper: bool = False
 """``True`` if the PySide/Qt6 wrapper is active."""
+
+_building_docs: bool = False
+"""Set to ``True`` when building the documentation."""

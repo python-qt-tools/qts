@@ -34,6 +34,24 @@ To keep the scope reasonable, qts will focus on the variances that all code usin
 Nuanced detailed differences will not be abstracted away.
 Helper functions and similar may be provided on a case by case basis.
 
+.. code-block:: python
+
+    import qts
+    import qts.util
+
+
+    def main():
+        qts.set_wrapper(qts.available_wrappers()[0])
+
+        from qts import QtWidgets
+
+        application = QtWidgets.QApplication([])
+        widget = QtWidgets.QLabel("this is qts")
+        widget.show()
+        qts.util.exec(application)
+
+    main()
+
 
 .. _documentation: https://qts.readthedocs.io
 .. |documentation badge| image:: https://img.shields.io/badge/docs-read%20now-blue.svg?color=royalblue&logo=Read-the-Docs&logoColor=whitesmoke
