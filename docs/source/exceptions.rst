@@ -1,5 +1,7 @@
+.. _exceptions:
+
 Exceptions
-==========
+++++++++++
 
 .. autoclass:: qts.QtsError
 .. autoclass:: qts.InternalError

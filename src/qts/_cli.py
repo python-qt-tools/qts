@@ -21,7 +21,8 @@ def mypy() -> None:
     "wrapper_name",
     default=None,
     type=click.Choice(
-        case_sensitive=False, choices=[wrapper.name for wrapper in qts.wrappers]
+        case_sensitive=False,
+        choices=[wrapper.name for wrapper in qts.supported_wrappers],
     ),
 )
 @click.option(
@@ -33,6 +34,10 @@ def mypy() -> None:
     type=str,
 )
 def args(wrapper_name: str, delimiter: str) -> None:
+    """Generate arguments to be passed to mypy so it can understand which code should
+    be active.  If applications or other libraries use the same conditions in their
+    code then this will work for them as well.
+    """
     # TODO: make this selectable
     if wrapper_name is None:
         wrapper = qts.available_wrapper()

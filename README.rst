@@ -1,8 +1,8 @@
 qts - use the Qt you've got
-===========================
++++++++++++++++++++++++++++
 
 Resources
----------
+=========
 
 =================================  =================================  =============================
 
@@ -20,7 +20,7 @@ Resources
 
 
 Introduction
-------------
+============
 
 qts is presently an exploratory project that may turn into a Qt5/6 and PyQt/PySide compatibility layer.
 

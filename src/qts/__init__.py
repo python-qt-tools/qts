@@ -14,7 +14,7 @@ from qts._core import (
     set_wrapper,
     Wrapper,
     wrapper_by_name,
-    wrappers,
+    supported_wrappers,
 )
 from qts._errors import (
     InternalError,
@@ -28,11 +28,17 @@ from qts._errors import (
 from qts._version import get_versions
 
 __version__: str = get_versions()["version"]  # type: ignore[no-untyped-call]
+"""The qts version string."""
 del get_versions
 
 
 wrapper: typing.Optional[Wrapper] = None
+"""The presently active wrapper.  :data:`None` if no wrapper is set."""
 is_pyqt_5_wrapper: bool = False
+"""``True`` if the PyQt/Qt5 wrapper is active."""
 is_pyqt_6_wrapper: bool = False
+"""``True`` if the PyQt/Qt6 wrapper is active."""
 is_pyside_5_wrapper: bool = False
+"""``True`` if the PySide/Qt5 wrapper is active."""
 is_pyside_6_wrapper: bool = False
+"""``True`` if the PySide/Qt6 wrapper is active."""

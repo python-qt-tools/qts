@@ -3,9 +3,10 @@
 .. toctree::
     :maxdepth: 2
 
+    qts.rst
+    cli.rst
     exceptions.rst
     history.rst
-    qtcore.rst
-    qtwidgets.rst
+    qt/index.rst
 
 * :ref:`genindex`

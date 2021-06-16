@@ -39,8 +39,8 @@ def wrapper_fixture(setup_qts: None) -> qts.Wrapper:
 @pytest.fixture(
     name="any_wrapper",
     scope="session",
-    params=qts.wrappers,
-    ids=[wrapper.name for wrapper in qts.wrappers],
+    params=qts.supported_wrappers,
+    ids=[wrapper.name for wrapper in qts.supported_wrappers],
 )
 def any_wrapper_fixture(
     request: _pytest.fixtures.SubRequest,
@@ -53,7 +53,7 @@ def any_wrapper_fixture(
 available_wrapper = qts.available_wrapper()
 qts.set_wrapper(available_wrapper)
 
-other_wrappers = [wrapper for wrapper in qts.wrappers if wrapper != available_wrapper]
+other_wrappers = [wrapper for wrapper in qts.supported_wrappers if wrapper != available_wrapper]
 
 
 # @pytest.fixture(
