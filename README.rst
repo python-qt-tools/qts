@@ -22,7 +22,17 @@ Resources
 Introduction
 ============
 
-qts is presently an exploratory project that may turn into a Qt5/6 and PyQt/PySide compatibility layer.
+.. note::
+
+   qts is presently an exploratory project.
+   It does have test coverage and is significantly documented.
+   It only covers a few Qt modules.
+
+qts is a Qt5/6 and PyQt/PySide compatibility layer for your libraries and applications.
+It is designed to work with mypy and includes a CLI utility to notify mypy of the needed conditions.
+To keep the scope reasonable, qts will focus on the variances that all code using Qt will need such as imports and signals.
+Nuanced detailed differences will not be abstracted away.
+Helper functions and similar may be provided on a case by case basis.
 
 
 .. _documentation: https://qts.readthedocs.io
