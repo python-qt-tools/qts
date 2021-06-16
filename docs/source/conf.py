@@ -54,6 +54,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     # "sphinx_autodoc_typehints",
+    "sphinx_click",
     "sphinx_qt_documentation",
     "sphinx_inline_tabs",
 ]
