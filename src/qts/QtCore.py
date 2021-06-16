@@ -2,6 +2,7 @@
 #       https://github.com/python-qt-tools/qts/issues/8
 # mypy: implicit_reexport
 
+# start-after qts.is_* example
 import qts
 
 
@@ -17,6 +18,7 @@ elif qts.is_pyside_6_wrapper:
     from PySide6.QtCore import *
 else:
     raise qts.InvalidWrapperError(wrapper=qts.wrapper)
+# end-before qts.is_* example
 
 if qts.is_pyqt_5_wrapper or qts.is_pyqt_6_wrapper:
     Signal = pyqtSignal

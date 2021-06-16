@@ -1,7 +1,7 @@
 QtCore
-======
+++++++
 
-.. include:: incomplete_disclaimer.rst
+.. include:: ../incomplete_disclaimer.rst
 
 
 .. autodata:: qts.QtCore.Signal
