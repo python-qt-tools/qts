@@ -5,6 +5,7 @@
 
     qts.rst
     cli.rst
+    util.rst
     exceptions.rst
     history.rst
     qt/index.rst

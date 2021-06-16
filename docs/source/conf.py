@@ -25,6 +25,8 @@ import sphinx.util
 
 import qts
 
+qts._building_docs = True
+
 
 qts.set_wrapper(qts.available_wrapper())
 
