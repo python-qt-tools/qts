@@ -11,6 +11,7 @@ class Wrapper:
     """A representation of a specific wrapper that can be used to access a specific
     version of Qt.
     """
+
     family: str
     """The wrapper family.  ``"PyQt"`` or ``"PySide"``."""
     name: str
@@ -20,15 +21,29 @@ class Wrapper:
     module_name: str
     """The name used to import the module.  Such as ``"PySide6"``."""
 
-pyqt_5_wrapper = Wrapper(family="PyQt", name="PyQt5", major_version=5, module_name="PyQt5")
+
+pyqt_5_wrapper = Wrapper(
+    family="PyQt", name="PyQt5", major_version=5, module_name="PyQt5"
+)
 """The PyQt/Qt5 wrapper object."""
-pyqt_6_wrapper = Wrapper(family="PyQt", name="PyQt6", major_version=6, module_name="PyQt6")
+pyqt_6_wrapper = Wrapper(
+    family="PyQt", name="PyQt6", major_version=6, module_name="PyQt6"
+)
 """The PyQt/Qt6 wrapper object."""
-pyside_5_wrapper = Wrapper(family="PySide", name="PySide2", major_version=5, module_name="PySide2")
+pyside_5_wrapper = Wrapper(
+    family="PySide", name="PySide2", major_version=5, module_name="PySide2"
+)
 """The PySide/Qt5 wrapper object."""
-pyside_6_wrapper = Wrapper(family="PySide", name="PySide6", major_version=6, module_name="PySide6")
+pyside_6_wrapper = Wrapper(
+    family="PySide", name="PySide6", major_version=6, module_name="PySide6"
+)
 """The PySide/Qt6 wrapper object."""
-supported_wrappers = [pyqt_5_wrapper, pyqt_6_wrapper, pyside_5_wrapper, pyside_6_wrapper]
+supported_wrappers = [
+    pyqt_5_wrapper,
+    pyqt_6_wrapper,
+    pyside_5_wrapper,
+    pyside_6_wrapper,
+]
 """A list of all the supported wrapper objects."""
 
 
@@ -84,7 +99,9 @@ def available_wrappers(
     return available
 
 
-def available_wrapper(wrappers: typing.Optional[typing.Iterable[Wrapper]] = None) -> Wrapper:
+def available_wrapper(
+    wrappers: typing.Optional[typing.Iterable[Wrapper]] = None,
+) -> Wrapper:
     """Get the available wrapper when there is only one.
 
     :return: The wrapper object for the single available wrapper.

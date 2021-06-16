@@ -53,7 +53,9 @@ def any_wrapper_fixture(
 available_wrapper = qts.available_wrapper()
 qts.set_wrapper(available_wrapper)
 
-other_wrappers = [wrapper for wrapper in qts.supported_wrappers if wrapper != available_wrapper]
+other_wrappers = [
+    wrapper for wrapper in qts.supported_wrappers if wrapper != available_wrapper
+]
 
 
 # @pytest.fixture(
