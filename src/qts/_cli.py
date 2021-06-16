@@ -36,9 +36,21 @@ def mypy() -> None:
 def args(wrapper_name: str, delimiter: str) -> None:
     """Generate arguments to be passed to mypy so it can understand which code should
     be active.  If applications or other libraries use the same conditions in their
-    code then this will work for them as well.
+    code then this will work for them as well.  The output can be directly injected
+    in some shells such as is done below in bash.
+
+    .. code-block:: console
+
+        $ mypy $(qts mypy args --wrapper pyside6) my_file.py
+
+    The module import selection code in qts itself can act as a reference.
+
+    .. literalinclude:: ../../src/qts/QtCore.py
+       :linenos:
+       :start-after: # start-after qts.is_* example
+       :end-before: # end-before qts.is_* example
     """
-    # TODO: make this selectable
+    # TODO: deal with the rst leaking out to the console via --help
     if wrapper_name is None:
         wrapper = qts.available_wrapper()
     else:

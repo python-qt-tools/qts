@@ -53,7 +53,7 @@ You can directly query the present wrapper object multiple ways.
 The wrapper object can be retrieved directly through :data:`qts.wrapper`.
 In some cases it is more useful to simply check if a specific wrapper is selected.
 The ``qts.is_*`` values are helpful for this.
-In particular, mypy is able to understand booleans via the command line arguments ``--always-false`` and ``--always-true`.
+In particular, mypy is able to understand booleans via the command line arguments ``--always-false`` and ``--always-true``.
 The :ref:`cli` can be used to help generate the relevant options to pass to mypy.
 
 ..
