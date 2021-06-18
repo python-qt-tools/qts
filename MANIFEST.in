@@ -11,3 +11,4 @@ recursive-include docs *
 recursive-exclude docs/build *
 exclude .readthedocs.yml
 include eyes.svg
+include CHANGELOG.rst
