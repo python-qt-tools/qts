@@ -1,4 +1,4 @@
-qts 0.1.0
-=========
+qts 0.1
+=======
 
 - Initial release
