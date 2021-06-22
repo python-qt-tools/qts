@@ -10,8 +10,10 @@ Selecting a wrapper
 
 A Qt wrapper must be chosen before leveraging the qts compatibility features.
 qts is notified of the choice by a call to :func:`qts.set_wrapper`.
+:func:`qts.autoset_wrapper` automatically chooses and sets an available wrapper.
 
 .. autofunction:: qts.set_wrapper
+.. autofunction:: qts.autoset_wrapper
 
 
 Supported wrappers
@@ -43,6 +45,7 @@ Not all supported wrappers will be available in every case.
 
 .. autofunction:: qts.available_wrapper
 .. autofunction:: qts.available_wrappers
+.. autofunction:: qts.an_available_wrapper
 .. autofunction:: qts.wrapper_by_name
 
 

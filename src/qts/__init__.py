@@ -5,6 +5,8 @@
 import typing
 
 from qts._core import (
+    an_available_wrapper,
+    autoset_wrapper,
     available_wrapper,
     available_wrappers,
     pyqt_5_wrapper,
