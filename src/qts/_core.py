@@ -1,4 +1,5 @@
 import importlib.util
+import os
 import typing
 
 import attr
@@ -84,6 +85,12 @@ def autoset_wrapper() -> None:
     """Automatically choose and set the wrapper used to back the Qt modules accessed
     through qts.
     """
+    environment_wrapper_name = os.environ.get("QTS_WRAPPER")
+    environment_wrapper = _wrappers_by_name.get(environment_wrapper_name)
+    if environment_wrapper is not None:
+        set_wrapper(wrapper=environment_wrapper)
+        return
+
     set_wrapper(wrapper=an_available_wrapper())
 
 
