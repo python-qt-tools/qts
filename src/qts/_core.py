@@ -86,10 +86,13 @@ def autoset_wrapper() -> None:
     through qts.
     """
     environment_wrapper_name = os.environ.get("QTS_WRAPPER")
-    environment_wrapper = _wrappers_by_name.get(environment_wrapper_name)
-    if environment_wrapper is not None:
-        set_wrapper(wrapper=environment_wrapper)
-        return
+
+    if environment_wrapper_name is not None:
+        environment_wrapper = _wrappers_by_name.get(environment_wrapper_name)
+
+        if environment_wrapper is not None:
+            set_wrapper(wrapper=environment_wrapper)
+            return
 
     set_wrapper(wrapper=an_available_wrapper())
 
