@@ -121,6 +121,8 @@ def test_importing_without_setting_auto_picks_from_environment_variable(
     wrapper: qts.Wrapper,
 ) -> None:
     content = f"""
+    import os
+
     import pytest
 
     import qts
@@ -128,18 +130,10 @@ def test_importing_without_setting_auto_picks_from_environment_variable(
 
     def test():
         assert qts.wrapper is None
+        os.environ["QTS_WRAPPER"] = {wrapper.name!r}
         from qts import {qt_module.name}
         assert qts.wrapper.name == {wrapper.name!r}
     """
     pytester.makepyfile(content)
-    # TODO: this is a workaround for pytester not accepting env=
-    original = os.environ.get("QTS_WRAPPER")
-    try:
-        os.environ["QTS_WRAPPER"] = wrapper.name
-        run_result = pytester.runpytest_subprocess()
-    finally:
-        if original is None:
-            del os.environ["QTS_WRAPPER"]
-        else:
-            os.environ["QTS_WRAPPER"] = original
+    run_result = pytester.runpytest_subprocess()
     run_result.assert_outcomes(passed=1)
