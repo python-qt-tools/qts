@@ -14,6 +14,13 @@ Features
   (`#21 <https://github.com/python-qt-tools/qts/pull/21>`__)
 
 
+Removals
+--------
+
+- ``NoWrapperSelectedError`` is no longer applicable since a wrapper will be automatically selected if needed.
+  (`#21 <https://github.com/python-qt-tools/qts/pull/21>`__)
+
+
 qts 0.1
 =======
 

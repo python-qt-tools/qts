@@ -23,7 +23,6 @@ from qts._errors import (
     InvalidWrapperError,
     MultipleWrappersAvailableError,
     NoWrapperAvailableError,
-    NoWrapperSelectedError,
     QtsError,
     WrapperAlreadySelectedError,
 )
