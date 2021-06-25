@@ -88,9 +88,11 @@ def autoset_wrapper() -> None:
     environment_wrapper_name = os.environ.get("QTS_WRAPPER")
 
     if environment_wrapper_name is not None:
-        environment_wrapper = _wrappers_by_name.get(environment_wrapper_name)
+        environment_wrapper = _wrappers_by_name.get(environment_wrapper_name.casefold())
 
-        if environment_wrapper is not None:
+        if environment_wrapper is None:
+            raise qts.InvalidWrapperError(wrapper=environment_wrapper)
+        else:
             set_wrapper(wrapper=environment_wrapper)
             return
 

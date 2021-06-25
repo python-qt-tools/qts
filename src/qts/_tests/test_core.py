@@ -123,8 +123,6 @@ def test_importing_without_setting_auto_picks_from_environment_variable(
     content = f"""
     import os
 
-    import pytest
-
     import qts
 
 
@@ -133,6 +131,49 @@ def test_importing_without_setting_auto_picks_from_environment_variable(
         os.environ["QTS_WRAPPER"] = {wrapper.name!r}
         from qts import {qt_module.name}
         assert qts.wrapper.name == {wrapper.name!r}
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)
+
+
+def test_autoset_wrapper_works_with_valid_wrapper(
+    pytester: pytest.Pytester,
+    wrapper: qts.Wrapper,
+) -> None:
+    content = f"""
+    import os
+
+    import qts
+
+
+    def test():
+        assert qts.wrapper is None
+        os.environ["QTS_WRAPPER"] = {wrapper.name!r}
+        qts.autoset_wrapper()
+        assert qts.wrapper.name == {wrapper.name!r}
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)
+
+
+def test_autoset_wrapper_raises_with_invalid_wrapper(
+    pytester: pytest.Pytester,
+) -> None:
+    content = f"""
+    import os
+
+    import pytest
+
+    import qts
+
+
+    def test():
+        assert qts.wrapper is None
+        os.environ["QTS_WRAPPER"] = "not a wrapper"
+        with pytest.raises(qts.InvalidWrapperError):
+            qts.autoset_wrapper()
     """
     pytester.makepyfile(content)
     run_result = pytester.runpytest_subprocess()
