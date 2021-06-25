@@ -17,7 +17,7 @@ class InternalError(QtsError):
 class InvalidWrapperError(QtsError):
     """Raised when an invalid wrapper is specified."""
 
-    def __init__(self, wrapper: qts.Wrapper):
+    def __init__(self, wrapper: object):
         super().__init__(f"Unknown wrapper specified: {wrapper!r}")
 
 

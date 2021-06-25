@@ -83,7 +83,11 @@ def set_wrapper(wrapper: Wrapper) -> None:
 
 def autoset_wrapper() -> None:
     """Automatically choose and set the wrapper used to back the Qt modules accessed
-    through qts.
+    through qts.  If the environment variable ``QTS_WRAPPER`` is set to a name of a
+    supported wrapper then that wrapper will be used.  The lookup is case insensitive.
+
+    :raises qts.InvalidWrapperError: When an unsupported wrapper name is specified in
+        the ``QTS_WRAPPER`` environment variable.
     """
     environment_wrapper_name = os.environ.get("QTS_WRAPPER")
 
