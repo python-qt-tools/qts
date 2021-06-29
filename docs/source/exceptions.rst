@@ -8,5 +8,4 @@ Exceptions
 .. autoclass:: qts.InvalidWrapperError
 .. autoclass:: qts.MultipleWrappersAvailableError
 .. autoclass:: qts.NoWrapperAvailableError
-.. autoclass:: qts.NoWrapperSelectedError
 .. autoclass:: qts.WrapperAlreadySelectedError

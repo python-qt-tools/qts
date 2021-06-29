@@ -1,4 +1,5 @@
 import importlib.util
+import os
 import typing
 
 import attr
@@ -39,10 +40,10 @@ pyside_6_wrapper = Wrapper(
 )
 """The PySide/Qt6 wrapper object."""
 supported_wrappers = [
-    pyqt_5_wrapper,
+    pyside_6_wrapper,
     pyqt_6_wrapper,
     pyside_5_wrapper,
-    pyside_6_wrapper,
+    pyqt_5_wrapper,
 ]
 """A list of all the supported wrapper objects."""
 
@@ -78,6 +79,28 @@ def set_wrapper(wrapper: Wrapper) -> None:
     qts.is_pyqt_6_wrapper = wrapper == pyqt_6_wrapper
     qts.is_pyside_5_wrapper = wrapper == pyside_5_wrapper
     qts.is_pyside_6_wrapper = wrapper == pyside_6_wrapper
+
+
+def autoset_wrapper() -> None:
+    """Automatically choose and set the wrapper used to back the Qt modules accessed
+    through qts.  If the environment variable ``QTS_WRAPPER`` is set to a name of a
+    supported wrapper then that wrapper will be used.  The lookup is case insensitive.
+
+    :raises qts.InvalidWrapperError: When an unsupported wrapper name is specified in
+        the ``QTS_WRAPPER`` environment variable.
+    """
+    environment_wrapper_name = os.environ.get("QTS_WRAPPER")
+
+    if environment_wrapper_name is not None:
+        environment_wrapper = _wrappers_by_name.get(environment_wrapper_name.casefold())
+
+        if environment_wrapper is None:
+            raise qts.InvalidWrapperError(wrapper=environment_wrapper)
+        else:
+            set_wrapper(wrapper=environment_wrapper)
+            return
+
+    set_wrapper(wrapper=an_available_wrapper())
 
 
 def available_wrappers(
@@ -121,6 +144,29 @@ def available_wrapper(
 
     [the_one] = all_available
     return the_one
+
+
+def an_available_wrapper(
+    wrappers: typing.Optional[typing.Iterable[Wrapper]] = None,
+) -> Wrapper:
+    """Get an available wrapper when there is one or more available.
+
+    :param wrappers: The wrappers to consider.  All if not specified.
+
+    :return: The wrapper object for the single available wrapper.
+
+    :raises qts.NoWrapperAvailableError: When no wrappers are available.
+    """
+    if wrappers is None:
+        wrappers = supported_wrappers
+
+    all_available = available_wrappers(wrappers=wrappers)
+
+    for wrapper in wrappers:
+        if wrapper in all_available:
+            return wrapper
+
+    raise qts.NoWrapperAvailableError(wrappers=wrappers)
 
 
 def wrapper_by_name(name: str) -> Wrapper:

@@ -7,8 +7,9 @@ import qts
 
 
 if qts.wrapper is None:
-    raise qts.NoWrapperSelectedError()
-elif qts.is_pyqt_5_wrapper:
+    qts.autoset_wrapper()
+
+if qts.is_pyqt_5_wrapper:
     from PyQt5.QtCore import *
 elif qts.is_pyqt_6_wrapper:
     from PyQt6.QtCore import *

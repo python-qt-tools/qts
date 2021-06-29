@@ -17,7 +17,7 @@ class InternalError(QtsError):
 class InvalidWrapperError(QtsError):
     """Raised when an invalid wrapper is specified."""
 
-    def __init__(self, wrapper: qts.Wrapper):
+    def __init__(self, wrapper: object):
         super().__init__(f"Unknown wrapper specified: {wrapper!r}")
 
 
@@ -42,13 +42,6 @@ class NoWrapperAvailableError(QtsError):
         super().__init__(
             f"No wrapper module available when searching for: {wrapper_list}"
         )
-
-
-class NoWrapperSelectedError(QtsError):
-    """Raised when a wrapper selection is required but has not been made."""
-
-    def __init__(self) -> None:
-        super().__init__("No wrapper selected, see qts.set_wrapper()")
 
 
 def name_or_repr(wrapper: qts.Wrapper) -> str:
