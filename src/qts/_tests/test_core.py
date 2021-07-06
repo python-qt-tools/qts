@@ -180,7 +180,7 @@ def test_autoset_wrapper_raises_with_invalid_wrapper(
     run_result.assert_outcomes(passed=1)
 
 
-def test_check_already_imported_wrappers_finds_none(pytester: pytest.Pytester):
+def test_check_already_imported_wrappers_finds_none(pytester: pytest.Pytester) -> None:
     content = f"""
     import sys
 
@@ -200,7 +200,7 @@ def test_check_already_imported_wrappers_finds_none(pytester: pytest.Pytester):
 def test_check_already_imported_wrappers_raises_for_only_unsupported(
     module_name: str,
     pytester: pytest.Pytester,
-):
+) -> None:
     content = f"""
     import sys
 
@@ -231,7 +231,7 @@ def test_check_already_imported_wrappers_returns(
     module_name: str,
     unsupported_module_names: str,
     pytester: pytest.Pytester,
-):
+) -> None:
     content = f"""
     import sys
 
@@ -260,16 +260,11 @@ def test_check_already_imported_wrappers_returns(
         for module in qts.supported_wrappers
     ],
 )
-# @pytest.mark.parametrize(
-#     argnames=["unsupported_module_names"],
-#     argvalues=[[[]], [["PyQt4"]], [["PySide"]], [["PyQt4", "PySide"]]],
-# )
 def test_set_wrapper_raises_if_another_is_already_imported(
     module: qts.Wrapper,
     another_module: qts.Wrapper,
-    # unsupported_module_names: str,
     pytester: pytest.Pytester,
-):
+) -> None:
     content = f"""
     import sys
 
