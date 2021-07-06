@@ -11,6 +11,9 @@ Selecting a wrapper
 A Qt wrapper must be chosen before leveraging the qts compatibility features.
 qts is notified of the choice by a call to :func:`qts.set_wrapper`.
 :func:`qts.autoset_wrapper` automatically chooses and sets an available wrapper.
+In any case, qts checks for wrappers that have already been imported.
+The setting of a wrapper will fail if only unsupported wrappers are already imported.
+The setting also fails if a supported wrapper other than the one requested is already imported.
 
 .. autofunction:: qts.set_wrapper
 .. autofunction:: qts.autoset_wrapper

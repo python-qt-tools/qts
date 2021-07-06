@@ -9,6 +9,7 @@ from qts._core import (
     autoset_wrapper,
     available_wrapper,
     available_wrappers,
+    check_already_imported_wrappers,
     pyqt_5_wrapper,
     pyqt_6_wrapper,
     pyside_5_wrapper,
@@ -23,8 +24,10 @@ from qts._errors import (
     InvalidWrapperError,
     MultipleWrappersAvailableError,
     NoWrapperAvailableError,
+    OtherWrapperAlreadyImportedError,
     QtsError,
     WrapperAlreadySelectedError,
+    UnsupportedWrappersError,
 )
 from qts._version import get_versions
 
