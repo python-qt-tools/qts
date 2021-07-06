@@ -93,6 +93,15 @@ def set_wrapper(wrapper: Wrapper) -> None:
 def check_already_imported_wrappers(
     wrappers: typing.Optional[typing.Iterable[Wrapper]] = None,
 ) -> typing.List[Wrapper]:
+    """Checks for wrappers that have already been imported and returns any that are
+    supported.  If only unsupported wrappers have been imported then an exception is
+    raised.
+
+    :returns: A list of the supported wrappers that have already been imported.
+
+    :raises qts.UnsupportedWrappersError: When only unsupported wrappers have been
+        imported.
+    """
     if wrappers is None:
         wrappers = supported_wrappers
 
