@@ -45,6 +45,10 @@ class NoWrapperAvailableError(QtsError):
 
 
 class OtherWrapperAlreadyImportedError(QtsError):
+    """Raised when wrappers have already been imported but a call is made to set
+    another.
+    """
+
     def __init__(
         self,
         requested: qts.Wrapper,
