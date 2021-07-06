@@ -253,6 +253,29 @@ def test_check_already_imported_wrappers_returns(
     run_result.assert_outcomes(passed=1)
 
 
+def test_check_already_imported_wrappers_returns_select_wrappers(
+    pytester: pytest.Pytester,
+) -> None:
+    content = f"""
+    import sys
+
+    import pytest
+
+    import qts
+
+    sys.modules["PyQt5"] = None
+    sys.modules["PyQt6"] = None
+
+    def test():
+        wrappers = [qts.pyqt_6_wrapper, qts.pyside_6_wrapper]
+        found = qts.check_already_imported_wrappers(wrappers=wrappers)
+        assert found == [qts.pyqt_6_wrapper]
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)
+
+
 @pytest.mark.parametrize(
     argnames=["module", "another_module"],
     argvalues=[

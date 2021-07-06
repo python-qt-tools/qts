@@ -1,3 +1,13 @@
+qts [unreleased]
+================
+
+Features
+--------
+
+- If a wrapper has already been imported then :func:`qts.autoset_wrapper` uses it.
+  (`#23 <https://github.com/python-qt-tools/qts/pull/23>`__)
+
+
 qts 0.2
 =======
 
