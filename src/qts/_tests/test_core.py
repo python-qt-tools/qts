@@ -281,3 +281,29 @@ def test_set_wrapper_raises_if_another_is_already_imported(
     pytester.makepyfile(content)
     run_result = pytester.runpytest_subprocess()
     run_result.assert_outcomes(passed=1)
+
+
+@pytest.mark.parametrize(
+    argnames=["module"],
+    argvalues=[[module] for module in qts.supported_wrappers],
+)
+def test_autoset_wrapper_uses_already_imported(
+    module: qts.Wrapper,
+    pytester: pytest.Pytester,
+) -> None:
+    content = f"""
+    import sys
+
+    import pytest
+
+    import qts
+
+    sys.modules[{module.name!r}] = None
+
+    def test():
+        qts.autoset_wrapper()
+        assert qts.wrapper == qts.wrapper_by_name(name={module.name!r})
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)

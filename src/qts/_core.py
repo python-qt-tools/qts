@@ -90,12 +90,24 @@ def set_wrapper(wrapper: Wrapper) -> None:
     qts.is_pyside_6_wrapper = wrapper == pyside_6_wrapper
 
 
+def already_imported_wrapper_names() -> typing.List[str]:
+    return [
+        module
+        for module in sys.modules
+        if "." not in module
+        if any(module.startswith(name) for name in ["PyQt", "PySide"])
+    ]
+
+
 def check_already_imported_wrappers(
     wrappers: typing.Optional[typing.Iterable[Wrapper]] = None,
 ) -> typing.List[Wrapper]:
     """Checks for wrappers that have already been imported and returns any that are
     supported.  If only unsupported wrappers have been imported then an exception is
     raised.
+
+    :param wrappers: An iterable of :class:`qts.Wrapper` to use as the supported list.
+        If unspecified or :object:`None` then :attr:`qts.supported_wrappers` is used.
 
     :returns: A list of the supported wrappers that have already been imported.
 
@@ -105,21 +117,16 @@ def check_already_imported_wrappers(
     if wrappers is None:
         wrappers = supported_wrappers
 
-    already_imported = {
-        module
-        for module in sys.modules
-        if "." not in module
-        if any(module.startswith(name) for name in ["PyQt", "PySide"])
-    }
+    already_imported_names = already_imported_wrapper_names()
 
-    if len(already_imported) == 0:
+    if len(already_imported_names) == 0:
         return []
 
     supported = {wrapper.module_name for wrapper in wrappers}
-    supported_already_imported = supported.intersection(already_imported)
+    supported_already_imported = supported.intersection(already_imported_names)
 
     if len(supported_already_imported) == 0:
-        raise qts.UnsupportedWrappersError(module_names=already_imported)
+        raise qts.UnsupportedWrappersError(module_names=already_imported_names)
 
     return [
         wrapper_by_name(name=module_name) for module_name in supported_already_imported
@@ -130,6 +137,7 @@ def autoset_wrapper() -> None:
     """Automatically choose and set the wrapper used to back the Qt modules accessed
     through qts.  If the environment variable ``QTS_WRAPPER`` is set to a name of a
     supported wrapper then that wrapper will be used.  The lookup is case insensitive.
+    If a supported wrapper has already been imported then it will be used.
 
     :raises qts.InvalidWrapperError: When an unsupported wrapper name is specified in
         the ``QTS_WRAPPER`` environment variable.
@@ -145,7 +153,13 @@ def autoset_wrapper() -> None:
             set_wrapper(wrapper=environment_wrapper)
             return
 
-    set_wrapper(wrapper=an_available_wrapper())
+    already_imported = check_already_imported_wrappers()
+    if len(already_imported) > 0:
+        available = an_available_wrapper(wrappers=already_imported)
+    else:
+        available = an_available_wrapper()
+
+    set_wrapper(wrapper=available)
 
 
 def available_wrappers(
@@ -153,7 +167,8 @@ def available_wrappers(
 ) -> typing.Sequence[Wrapper]:
     """Get a sequence of the wrappers that are available for use.  If ``wrappers`` is
     passed, only wrappers that are both available and in the passed iterable will be
-    returned.
+    returned.  Availability is checked both by installation metadata and any wrappers
+    that have already been imported.
 
     :returns: The wrappers that are installed and available for use.
     """
@@ -161,9 +176,17 @@ def available_wrappers(
     if wrappers is None:
         wrappers = supported_wrappers
 
+    already_imported_names = already_imported_wrapper_names()
+
     available = [
-        wrapper for wrapper in wrappers if importlib.util.find_spec(wrapper.module_name)
+        wrapper
+        for wrapper in wrappers
+        if (
+            importlib.util.find_spec(wrapper.module_name)
+            or wrapper.name in already_imported_names
+        )
     ]
+
     return available
 
 
