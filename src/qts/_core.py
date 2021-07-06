@@ -58,6 +58,8 @@ def set_wrapper(wrapper: Wrapper) -> None:
     :raises qts.WrapperAlreadySelectedError: When called and a wrapper has already
         been set.
     :raises qts.InvalidWrapperError: When called with an invalid wrapper.
+    :raises qts.OtherWrapperAlreadyImportedError: When another supported wrapper has
+        already been imported.
     """
 
     # This could accept the new wrapper if it matches the existing selection, but this
