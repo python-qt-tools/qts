@@ -44,11 +44,34 @@ class NoWrapperAvailableError(QtsError):
         )
 
 
+class OtherWrapperAlreadyImportedError(QtsError):
+    def __init__(
+        self,
+        requested: qts.Wrapper,
+        already_imported: typing.Collection[qts.Wrapper],
+    ):
+        already_imported_string = ", ".join(module.name for module in already_imported)
+        super().__init__(
+            f"Requested {requested.name} but only others are already imported:"
+            f" {already_imported_string}"
+        )
+
+
 def name_or_repr(wrapper: qts.Wrapper) -> str:
     try:
         return wrapper.name
     except AttributeError:
         return repr(wrapper)
+
+
+class UnsupportedWrappersError(QtsError):
+    """Raised when autosetting a wrapper but unsupported wrappers have already been
+    imported.
+    """
+
+    def __init__(self, module_names: typing.Collection[str]) -> None:
+        s = ", ".join(sorted(module_names))
+        super().__init__(f"Unsupported wrappers have already been imported: f{s}")
 
 
 class WrapperAlreadySelectedError(QtsError):

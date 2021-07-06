@@ -1,5 +1,6 @@
 import importlib.util
 import os
+import sys
 import typing
 
 import attr
@@ -73,12 +74,45 @@ def set_wrapper(wrapper: Wrapper) -> None:
     if wrapper not in supported_wrappers:
         raise qts.InvalidWrapperError(wrapper=wrapper)
 
+    already_imported = check_already_imported_wrappers()
+    if len(already_imported) > 0 and wrapper not in already_imported:
+        raise qts.OtherWrapperAlreadyImportedError(
+            requested=wrapper, already_imported=already_imported
+        )
+
     qts.wrapper = wrapper
 
     qts.is_pyqt_5_wrapper = wrapper == pyqt_5_wrapper
     qts.is_pyqt_6_wrapper = wrapper == pyqt_6_wrapper
     qts.is_pyside_5_wrapper = wrapper == pyside_5_wrapper
     qts.is_pyside_6_wrapper = wrapper == pyside_6_wrapper
+
+
+def check_already_imported_wrappers(
+    wrappers: typing.Optional[typing.Iterable[Wrapper]] = None,
+) -> typing.List[Wrapper]:
+    if wrappers is None:
+        wrappers = supported_wrappers
+
+    already_imported = {
+        module
+        for module in sys.modules
+        if "." not in module
+        if any(module.startswith(name) for name in ["PyQt", "PySide"])
+    }
+
+    if len(already_imported) == 0:
+        return []
+
+    supported = {wrapper.module_name for wrapper in wrappers}
+    supported_already_imported = supported.intersection(already_imported)
+
+    if len(supported_already_imported) == 0:
+        raise qts.UnsupportedWrappersError(module_names=already_imported)
+
+    return [
+        wrapper_by_name(name=module_name) for module_name in supported_already_imported
+    ]
 
 
 def autoset_wrapper() -> None:

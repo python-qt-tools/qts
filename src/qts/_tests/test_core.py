@@ -178,3 +178,111 @@ def test_autoset_wrapper_raises_with_invalid_wrapper(
     pytester.makepyfile(content)
     run_result = pytester.runpytest_subprocess()
     run_result.assert_outcomes(passed=1)
+
+
+def test_check_already_imported_wrappers_finds_none(pytester: pytest.Pytester):
+    content = f"""
+    import sys
+
+    import qts
+
+
+    def test():
+        already_imported = qts.check_already_imported_wrappers()
+        assert already_imported == []
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)
+
+
+@pytest.mark.parametrize(argnames=["module_name"], argvalues=[["PyQt4"], ["PySide"]])
+def test_check_already_imported_wrappers_raises_for_only_unsupported(
+    module_name: str,
+    pytester: pytest.Pytester,
+):
+    content = f"""
+    import sys
+
+    import pytest
+
+    import qts
+
+    sys.modules[{module_name!r}] = None
+
+    def test():
+        with pytest.raises(qts.UnsupportedWrappersError):
+            qts.check_already_imported_wrappers()
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)
+
+
+@pytest.mark.parametrize(
+    argnames=["module_name"],
+    argvalues=[[module.name] for module in qts.supported_wrappers],
+)
+@pytest.mark.parametrize(
+    argnames=["unsupported_module_names"],
+    argvalues=[[[]], [["PyQt4"]], [["PySide"]], [["PyQt4", "PySide"]]],
+)
+def test_check_already_imported_wrappers_returns(
+    module_name: str,
+    unsupported_module_names: str,
+    pytester: pytest.Pytester,
+):
+    content = f"""
+    import sys
+
+    import pytest
+
+    import qts
+
+    sys.modules[{module_name!r}] = None
+    for module_name in {unsupported_module_names}:
+        sys.modules[module_name] = None
+
+    def test():
+        found = qts.check_already_imported_wrappers()
+        found_names = [module.name for module in found]
+        assert found_names == [{module_name!r}]
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)
+
+
+@pytest.mark.parametrize(
+    argnames=["module", "another_module"],
+    argvalues=[
+        [module, next(iter(set(qts.supported_wrappers) - {module}))]
+        for module in qts.supported_wrappers
+    ],
+)
+# @pytest.mark.parametrize(
+#     argnames=["unsupported_module_names"],
+#     argvalues=[[[]], [["PyQt4"]], [["PySide"]], [["PyQt4", "PySide"]]],
+# )
+def test_set_wrapper_raises_if_another_is_already_imported(
+    module: qts.Wrapper,
+    another_module: qts.Wrapper,
+    # unsupported_module_names: str,
+    pytester: pytest.Pytester,
+):
+    content = f"""
+    import sys
+
+    import pytest
+
+    import qts
+
+    sys.modules[{another_module.name!r}] = None
+
+    def test():
+        with pytest.raises(qts.OtherWrapperAlreadyImportedError):
+            qts.set_wrapper(qts.wrapper_by_name(name={module.name!r}))
+    """
+    pytester.makepyfile(content)
+    run_result = pytester.runpytest_subprocess()
+    run_result.assert_outcomes(passed=1)
