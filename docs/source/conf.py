@@ -62,8 +62,8 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "attr": ("https://www.attrs.org/en/latest/", None),
-    "attrs": ("https://www.attrs.org/en/latest/", None),
+    "attr": ("https://www.attrs.org/en/stable/", None),
+    "attrs": ("https://www.attrs.org/en/stable/", None),
     "python": ("https://docs.python.org/3", None),
     "PyQt5": ("https://www.riverbankcomputing.com/static/Docs/PyQt5", None),
 }
