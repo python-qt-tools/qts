@@ -62,6 +62,10 @@ extensions = [
 ]
 
 intersphinx_mapping = {
+    # TODO: use stable.  using latest to get fixes for
+    #       https://github.com/python-attrs/attrs/issues/849 sooner
+    "attr": ("https://www.attrs.org/en/latest/", None),
+    "attrs": ("https://www.attrs.org/en/latest/", None),
     "python": ("https://docs.python.org/3", None),
     "PyQt5": ("https://www.riverbankcomputing.com/static/Docs/PyQt5", None),
 }
