@@ -176,19 +176,19 @@ jobs:
             docker: 3.9
             matrix: cpython3.9
         qt:
-          - name: PyQt 5.15.4
+          - name: PyQt 5
             tox_qt: 5
             tox_wrapper: pyqt
             matrix_major: 5
-          - name: PyQt 6.1.0
+          - name: PyQt 6
             tox_qt: 6
             tox_wrapper: pyqt
             matrix_major: 6
-          - name: PySide 5.15.2
+          - name: PySide 5
             tox_qt: 5
             tox_wrapper: pyside
             matrix_major: 5
-          - name: PySide 6.1.0
+          - name: PySide 6
             tox_qt: 6
             tox_wrapper: pyside
             matrix_major: 6
