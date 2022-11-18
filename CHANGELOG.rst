@@ -1,4 +1,4 @@
-qts [unreleased]
+qts 0.3
 ================
 
 Features
