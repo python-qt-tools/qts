@@ -159,11 +159,6 @@ jobs:
             runs-on: macos-latest
             matrix: macos
         python:
-          - name: 3.6
-            tox: py36
-            action: 3.6
-            docker: 3.6
-            matrix: cpython3.6
           - name: 3.7
             tox: py37
             action: 3.7

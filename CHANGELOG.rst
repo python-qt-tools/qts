@@ -1,5 +1,14 @@
-qts 0.3
+qts [unreleased]
 ================
+
+Removals
+--------
+
+- Dropped testing of and support for EOL Python 3.6.
+
+
+qts 0.3
+=======
 
 Features
 --------
