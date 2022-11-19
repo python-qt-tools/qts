@@ -2,9 +2,15 @@ from qts import QtCore
 
 
 def test_signal() -> None:
-    assert isinstance(QtCore.QObject.destroyed, QtCore.Signal)
+    # TODO: Working around hinting failure where PySide6 doesn't provide a .destroyed
+    #       attribute.
+    destroyed = getattr(QtCore.QObject, "destroyed")
+    assert isinstance(destroyed, QtCore.Signal)
 
 
 def test_bound_signal() -> None:
     qt_object = QtCore.QObject()
-    assert isinstance(qt_object.destroyed, QtCore.SignalInstance)
+    # TODO: Working around hinting failure where PySide6 doesn't provide a .destroyed
+    #       attribute.
+    destroyed = getattr(qt_object, "destroyed")
+    assert isinstance(destroyed, QtCore.SignalInstance)
