@@ -159,38 +159,52 @@ jobs:
             runs-on: macos-latest
             matrix: macos
         python:
-          - name: 3.7
+          - name: '3.7'
             tox: py37
-            action: 3.7
-            docker: 3.7
+            action: '3.7'
+            docker: '3.7'
             matrix: cpython3.7
-          - name: 3.8
+          - name: '3.8'
             tox: py38
-            action: 3.8
-            docker: 3.8
+            action: '3.8'
+            docker: '3.8'
             matrix: cpython3.8
-          - name: 3.9
+          - name: '3.9'
             tox: py39
-            action: 3.9
-            docker: 3.9
+            action: '3.9'
+            docker: '3.9'
             matrix: cpython3.9
+          - name: '3.10'
+            tox: py310
+            action: '3.10'
+            docker: '3.10'
+            matrix: cpython3.10
+          - name: '3.11'
+            tox: py311
+            action: '3.11'
+            docker: '3.11'
+            matrix: cpython3.11
         qt:
           - name: PyQt 5
             tox_qt: 5
             tox_wrapper: pyqt
             matrix_major: 5
+            family: pyqt
           - name: PyQt 6
             tox_qt: 6
             tox_wrapper: pyqt
             matrix_major: 6
+            family: pyqt
           - name: PySide 5
             tox_qt: 5
             tox_wrapper: pyside
             matrix_major: 5
+            family: pyside
           - name: PySide 6
             tox_qt: 6
             tox_wrapper: pyside
             matrix_major: 6
+            family: pyside
         bitness:
           - name: x32
             action: x86
@@ -211,6 +225,12 @@ jobs:
               matrix: windows
             qt:
               matrix_major: 6
+          - qt:
+              matrix_major: 5
+              family: pyside
+            python:
+              matrix: cpython3.11
+
 
     env:
       TOXENV: ${{ matrix.task.tox }}${{ fromJSON('["", "-"]')[matrix.task.tox != null] }}${{ matrix.python.tox }}-${{ matrix.qt.tox_wrapper }}-${{ matrix.qt.tox_qt }}
