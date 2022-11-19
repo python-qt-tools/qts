@@ -377,6 +377,7 @@ jobs:
   all:
     name: All
     runs-on: ubuntu-latest
+    if: always()
     needs:
       - build
       - check
@@ -384,7 +385,7 @@ jobs:
       - coverage
       - maybe_publish
     steps:
-      - name: This
-        shell: python
-        run: |
-          import this
+      - name: Require all successes
+        uses: re-actors/alls-green@v1.2.2
+        with:
+          jobs: ${{ toJSON(needs) }}
